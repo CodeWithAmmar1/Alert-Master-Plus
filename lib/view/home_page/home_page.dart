@@ -8,18 +8,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
- final List<String> defaultOptions = ['Discharge Line Temp'];
+  final List<String> defaultOptions = [
+    'Discharge Line Temp',
+    'Suction Line Temp',
+    'Return Air Temp',
+    'Supply Air Temp',
+    'Outdoor Temp',
+    'Compressor Temp',
+    'Ambient Temp',
+    'Water Inlet Temp',
+    'Water Outlet Temp',
+    'Room Temp',
+  ];
   final int sensorCount = 4;
   final Map<int, List<String>> dropdownOptions = {};
   final Map<int, String?> selectedValues = {};
   final Map<int, TextEditingController> controllers = {};
   final Map<int, bool> sensorStatus = {};
-  final Map<int, double> sensorTemps = {
-    1: 24,
-    2: 22,
-    3: 26,
-    4: 23,
-  };
+  final Map<int, double> sensorTemps = {1: 24, 2: 22, 3: 26, 4: 23};
 
   @override
   void initState() {
@@ -42,8 +48,10 @@ class _HomePageState extends State<HomePage> {
           children: [
             Row(
               children: [
-                Text('Sensor $sensorId',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  'Sensor $sensorId',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 Spacer(),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -70,9 +78,10 @@ class _HomePageState extends State<HomePage> {
             DropdownButton<String>(
               isExpanded: true,
               value: selectedValues[sensorId],
-              items: dropdownOptions[sensorId]!
-                  .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                  .toList(),
+              items:
+                  dropdownOptions[sensorId]!
+                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                      .toList(),
               onChanged: (val) {
                 setState(() {
                   selectedValues[sensorId] = val;
@@ -84,9 +93,7 @@ class _HomePageState extends State<HomePage> {
                 Expanded(
                   child: TextField(
                     controller: controllers[sensorId],
-                    decoration: InputDecoration(
-                      hintText: 'Add new option...',
-                    ),
+                    decoration: InputDecoration(hintText: 'Add new option...'),
                   ),
                 ),
                 ElevatedButton(
@@ -103,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                   child: Text('+ Add'),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -139,7 +146,10 @@ class _HomePageState extends State<HomePage> {
                 childAspectRatio: 1,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                children: List.generate(sensorCount, (i) => buildSensorCard(i + 1)),
+                children: List.generate(
+                  sensorCount,
+                  (i) => buildSensorCard(i + 1),
+                ),
               ),
             ),
             SizedBox(height: 10),
@@ -149,9 +159,9 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.symmetric(horizontal: 40, vertical: 14),
               ),
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Configuration saved')),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text('Configuration saved')));
               },
               child: Text('Save Configuration'),
             ),
